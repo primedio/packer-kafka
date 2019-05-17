@@ -17,10 +17,8 @@ There are a couple of things needed for the script to work.
 
 ### Prerequisites
 
-Packer and Gcloud and/or AWS Command Line Interface tools need to be installed on your local
-computer.
-To build a base image you have to know the id of the latest Debian AMI (AWS) or Google files
-for the region where you wish to build the AMI.
+Packer and Gcloud and/or AWS Command Line Interface tools need to be installed on your local computer.
+To build a base image you have to know the id of the latest Debian AMI (AWS) or Google files for the region where you wish to build the AMI.
 
 #### Packer
 
@@ -255,14 +253,14 @@ to contribute to this project.
 ## Versioning
 
 This project uses [SemVer](http://semver.org/) for versioning. For the versions
-available, see the [tags on this repository](https://github.com/fscm/packer-aws-kafka/tags).
+available, see the [tags on this repository](https://github.com/primedio/packer-kafka/tags).
 
 ## Authors
 
-- **Rene Nederhand** - [primedio](https://gitlab.com/primedio)
+- **Rene Nederhand** - [primedio](https://github.com/primedio)
 - **Frederico Martins** - [fscm](https://github.com/fscm)
 
-See also the list of [contributors](https://github.com/fscm/packer-aws-kafka/contributors)
+See also the list of [contributors](https://github.com/primedio/packer-kafka/contributors)
 who participated in this project.
 
 ## License
