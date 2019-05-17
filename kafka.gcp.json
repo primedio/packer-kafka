@@ -1,0 +1,80 @@
+{
+  "_copyright": "2019, PrimedIO B.V.",
+  "_author":    "Rene Nederhand <http://gitlab.com/primedio>",
+  "_license":   "SPDX-License-Identifier: MIT",
+  "variables": {
+    "builder_type":        "googlecompute",
+    "project_id":          "{{env `project_id`}}",
+    "machine_type":        "n1-standard-1",
+    "source_image_family": "debian-9",
+    "region":              "europe-west4",
+    "zone":                "europe-west4-a",
+    "image_description":   "PrimedIO Kafka Machine Image",
+    "image_name":          "primed-kafka",
+    "image_name_prefix":   "",
+    "disk_size":           "16",
+    "disk_type":           "pd-ssd",
+    "ssh_username":        "admin",
+    "kafka_scala_version": "2.11",
+    "kafka_uid":           "2008",
+    "kafka_version":       "{{env `kafka_version`}}",
+    "os_short_arch":       "x64",
+    "system_locale":       "en_US",
+    "zookeeper_uid":       "2006",
+    "zookeeper_version":   "3.4.9"
+  },
+  "builders": [{
+    "type":                "googlecompute",
+    "project_id":          "{{user `project_id`}}",
+    "zone":                "{{user `zone`}}",
+    "region":              "{{user `region`}}",
+    "source_image_family": "{{user `source_image_family`}}",
+    "machine_type":        "{{user `machine_type`}}",
+    "ssh_username":        "{{user `ssh_username`}}",
+    "image_name":          "{{user `image_name_prefix`}}{{user `image_name`}}-220-{{timestamp}}"
+  }],
+  "provisioners": [
+    {
+      "type":        "file",
+      "source":      "files/sysctl/",
+      "destination": "/tmp"
+    },
+    {
+      "type":        "file",
+      "source":      "files/systemd/",
+      "destination": "/tmp"
+    },
+    {
+      "type":        "file",
+      "source":      "files/kafka/",
+      "destination": "/tmp"
+    },
+    {
+      "type":        "file",
+      "source":      "files/zookeeper/",
+      "destination": "/tmp"
+    },
+    {
+      "type":           "shell",
+      "inline_shebang": "/bin/bash -e",
+      "environment_vars": [
+        "DEBIAN_FRONTEND=noninteractive",
+        "SYSTEM_LOCALE={{user `system_locale`}}",
+        "JAVA_MAJOR_VERSION={{user `java_major_version`}}",
+        "JAVA_UPDATE_VERSION={{user `java_update_version`}}",
+        "JAVA_BUILD_NUMBER={{user `java_build_number`}}",
+        "JAVA_TOKEN={{user `java_token`}}",
+        "OS_SHORT_ARCH={{user `os_short_arch`}}",
+        "ZOOKEEPER_UID={{user `zookeeper_uid`}}",
+        "ZOOKEEPER_VERSION={{user `zookeeper_version`}}",
+        "KAFKA_UID={{user `kafka_uid`}}",
+        "KAFKA_VERSION={{user `kafka_version`}}",
+        "KAFKA_SCALA_VERSION={{user `kafka_scala_version`}}",
+        "SSH_USERNAME={{user `ssh_username`}}"
+
+
+      ],
+      "script": "provisioning.sh"
+    }
+  ]
+}
