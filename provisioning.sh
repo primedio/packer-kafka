@@ -28,14 +28,7 @@ sudo chmod 0644 /etc/sysctl.d/50-kafka.conf
 sudo sysctl -p /etc/sysctl.d/50-kafka.conf
 
 echo === Java ===
-#sudo mkdir /opt/java
-#echo "http://download.oracle.com/otn-pub/java/jdk/${JAVA_MAJOR_VERSION}u${JAVA_UPDATE_VERSION}-b${JAVA_BUILD_NUMBER}/${JAVA_TOKEN}/jre-${JAVA_MAJOR_VERSION}u$JAVA_UPDATE_VERSION-linux-${OS_SHORT_ARCH}.tar.gz"
-#curl -sL --retry 3 --insecure --header 'Cookie: oraclelicense=accept-securebackup-cookie;' "http://download.oracle.com/otn-pub/java/jdk/${JAVA_MAJOR_VERSION}u${JAVA_UPDATE_VERSION}-b${JAVA_BUILD_NUMBER}/${JAVA_TOKEN}/jre-${JAVA_MAJOR_VERSION}u{$JAVA_UPDATE_VERSION}-linux-${OS_SHORT_ARCH}.tar.gz" | sudo tar xz --strip-components=1 -C /opt/java/
-#sudo chown -R root:root /opt/java
 echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java' | sudo tee /etc/profile > /dev/null
-#sudo sed -i -r -e 's/#DefaultEnvironment/DefaultEnvironment/;/DefaultEnvironment/s/([^=])$/\\1 /;/DefaultEnvironment/s/$/\"JAVA_HOME=\\/opt\\/java\"/' /etc/systemd/system.conf
-#sudo gzip -r /opt/java/man/man1
-#for program in /opt/java/bin/*; do name=${program##*/}; manpage=''; [[ -f /opt/java/man/man1/${name}.1.gz ]] && manpage=\"--slave /usr/share/man/man1/${name}.1.gz ${name}.1.gz /opt/java/man/man1/${name}.1.gz\"; [[ -x ${program} && ! -L ${program} ]] && sudo update-alternatives --install /usr/bin/${name} ${name} /opt/java/bin/${name} 1 ${manpage}; done
 
 echo === Zookeeper ===
 sudo groupadd -g "$ZOOKEEPER_UID" zookeeper
