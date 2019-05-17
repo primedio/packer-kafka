@@ -1,5 +1,5 @@
 {
-  "_copyright": "2019, PrimedIO B.V.",
+  "_copyright": "2019, PrimedIO Group B.V.",
   "_author":    "Rene Nederhand <http://gitlab.com/primedio>",
   "_license":   "SPDX-License-Identifier: MIT",
   "variables": {
@@ -71,8 +71,6 @@
         "KAFKA_VERSION={{user `kafka_version`}}",
         "KAFKA_SCALA_VERSION={{user `kafka_scala_version`}}",
         "SSH_USERNAME={{user `ssh_username`}}"
-
-
       ],
       "script": "provisioning.sh"
     }
