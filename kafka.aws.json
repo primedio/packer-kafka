@@ -1,0 +1,86 @@
+{
+  "_copyright": "2019, PrimedIO Group B.V.",
+  "_author":    "Rene Nederhand <http://gitlab.com/primedio>",
+  "_license":   "SPDX-License-Identifier: MIT",
+  "variables": {
+    "aws_access_key":      "{{env `aws_access_key`}}",
+    "aws_ami_name":        "kafka",
+    "aws_ami_name_prefix": "",
+    "aws_instance_type":   "t2.micro",
+    "aws_region":          "{{env `aws_region`}}",
+    "aws_secret_key":      "{{env `aws_secret_key`}}",
+    "aws_ssh_username":    "admin",
+    "java_build_number":   "12",
+    "java_major_version":  "8",
+    "java_token":          "e758a0de34e24606bca991d704f6dcbf",
+    "java_update_version": "151",
+    "kafka_scala_version": "2.11",
+    "kafka_uid":           "2008",
+    "kafka_version":       "{{env `kafka_version`}}",
+    "os_short_arch":       "x64",
+    "system_locale":       "en_US",
+    "zookeeper_uid":       "2006",
+    "zookeeper_version":   "3.4.9"
+  },
+  "builders": [{
+    "type":                        "amazon-ebs",
+    "access_key":                  "{{user `aws_access_key`}}",
+    "secret_key":                  "{{user `aws_secret_key`}}",
+    "region":                      "{{user `aws_region`}}",
+    "instance_type":               "{{user `aws_instance_type`}}",
+    "ssh_username":                "{{user `aws_ssh_username`}}",
+    "associate_public_ip_address": true,
+    "ami_name":                    "{{user `aws_ami_name_prefix`}}{{user `aws_ami_name`}}-{{user `kafka_version`}}-({{isotime \"20060102150405\"}})",
+    "source_ami_filter": {
+      "filters": {
+        "architecture":        "x86_64",
+        "name":                "debian-stretch-*",
+        "root-device-type":    "ebs",
+        "virtualization-type": "hvm"
+      },
+      "owners":      ["379101102735"],
+      "most_recent": true
+    }
+  }],
+  "provisioners": [
+    {
+      "type":        "file",
+      "source":      "files/sysctl/",
+      "destination": "/tmp"
+    },
+    {
+      "type":        "file",
+      "source":      "files/systemd/",
+      "destination": "/tmp"
+    },
+    {
+      "type":        "file",
+      "source":      "files/kafka/",
+      "destination": "/tmp"
+    },
+    {
+      "type":        "file",
+      "source":      "files/zookeeper/",
+      "destination": "/tmp"
+    },
+    {
+      "type":           "shell",
+      "inline_shebang": "/bin/bash -e",
+      "environment_vars": [
+        "SYSTEM_LOCALE={{user `system_locale`}}",
+        "JAVA_MAJOR_VERSION={{user `java_major_version`}}",
+        "JAVA_UPDATE_VERSION={{user `java_update_version`}}",
+        "JAVA_BUILD_NUMBER={{user `java_build_number`}}",
+        "JAVA_TOKEN={{user `java_token`}}",
+        "OS_SHORT_ARCH={{user `os_short_arch`}}",
+        "ZOOKEEPER_UID={{user `zookeeper_uid`}}",
+        "ZOOKEEPER_VERSION={{user `zookeeper_version`}}",
+        "KAFKA_UID={{user `kafka_uid`}}",
+        "KAFKA_VERSION={{user `kafka_version`}}",
+        "KAFKA_SCALA_VERSION={{user `kafka_scala_version`}}",
+        "SSH_USERNAME={{user `aws_ssh_username`}}"
+      ],
+      "script": "provisioning.sh"
+    }
+  ]
+}
